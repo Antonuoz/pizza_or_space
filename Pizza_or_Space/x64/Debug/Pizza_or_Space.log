@@ -1,0 +1,21 @@
+﻿G:\stuff\VS\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Projekt_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Box.cpp
+  Camera.cpp
+G:\grk\Pizza_or_Space\src\Camera.h(3,10): error C1083: Cannot open include file: 'glm.hpp': No such file or directory
+  (compiling source file 'src/Camera.cpp')
+  
+  main.cpp
+G:\grk\Pizza_or_Space\src\main.cpp(1,10): error C1083: Cannot open include file: 'glew.h': No such file or directory
+  Render_Utils.cpp
+G:\grk\Pizza_or_Space\src\Render_Utils.h(2,10): error C1083: Cannot open include file: 'glm.hpp': No such file or directory
+  (compiling source file 'src/Render_Utils.cpp')
+  
+  Shader_Loader.cpp
+G:\grk\Pizza_or_Space\src\Shader_Loader.h(3,10): error C1083: Cannot open include file: 'glew.h': No such file or directory
+  (compiling source file 'src/Shader_Loader.cpp')
+  
+  Texture.cpp
+G:\grk\Pizza_or_Space\src\Texture.h(3,10): error C1083: Cannot open include file: 'glew.h': No such file or directory
+  (compiling source file 'src/Texture.cpp')
+  
+  Generating Code...

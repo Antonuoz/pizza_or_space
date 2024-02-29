@@ -1,0 +1,55 @@
+﻿G:\stuff\VS\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GrafikaProjekt.vcxproj, Projekt_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+  (compiling source file 'src/main.cpp')
+  G:\grk\dependencies\glfw-3.3.8.bin.WIN32\include\GLFW\glfw3.h(123,1):
+  see previous definition of 'APIENTRY'
+  
+G:\grk\Pizza_or_Space\src\project.hpp(38,9): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(195,62): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(230,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(414,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(415,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(419,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(420,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(421,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\grk\Pizza_or_Space\src\project.hpp(422,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+  SOIL.c
+G:\grk\Pizza_or_Space\src\SOIL\SOIL.c(1719,36): warning C4018: '<=': signed/unsigned mismatch
+G:\grk\Pizza_or_Space\src\SOIL\SOIL.c(1729,19): warning C4018: '<': signed/unsigned mismatch
+G:\grk\Pizza_or_Space\src\SOIL\SOIL.c(1841,6): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  stb_image_aug.c
+G:\grk\Pizza_or_Space\src\SOIL\stbi_DDS_aug_c.h(362,19): warning C4018: '>': signed/unsigned mismatch
+  (compiling source file 'src/SOIL/stb_image_aug.c')
+  
+G:\grk\Pizza_or_Space\src\SOIL\stbi_DDS_aug_c.h(366,19): warning C4018: '>': signed/unsigned mismatch
+  (compiling source file 'src/SOIL/stb_image_aug.c')
+  
+G:\grk\Pizza_or_Space\src\SOIL\stbi_DDS_aug_c.h(390,19): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'src/SOIL/stb_image_aug.c')
+  
+G:\grk\Pizza_or_Space\src\SOIL\stbi_DDS_aug_c.h(427,19): warning C4018: '<': signed/unsigned mismatch
+  (compiling source file 'src/SOIL/stb_image_aug.c')
+  
+  Generating Code...
+Box.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Pizza_or_Space.vcxproj -> G:\grk\Debug\Pizza_or_Space.exe

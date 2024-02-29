@@ -1,0 +1,2 @@
+﻿G:\stuff\VS\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GrafikaProjekt.vcxproj, Projekt_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Projekt_test.vcxproj -> G:\grk\Debug\Pizza_or_Space.exe
