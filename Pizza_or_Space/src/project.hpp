@@ -83,7 +83,12 @@ glm::vec3 lightColor = glm::vec3(0.9, 0.7, 0.8);
 
 std::vector<glm::vec3> asteroidPositions;
 
+struct Pizza {
+	glm::vec3 position;
+	bool collected;
+};
 
+std::vector<Pizza> pizzas;
 
 
 
@@ -272,6 +277,23 @@ void renderScene(GLFWwindow* window)
 
 	drawObjectTexture(shipContext, spaceshipModelMatrix, texture::fighter, FALSE);
 
+	for (auto& pizza : pizzas) {
+		if (!pizza.collected) {
+			float distanceToPizza = glm::distance(cameraPos, pizza.position);
+
+			// Assuming the pizza is collected when it's close to the spaceship
+			if (distanceToPizza < 0.5f) {
+				// Player collected the pizza
+				pizza.collected = true;
+				// Perform any additional actions here (e.g., score increment)
+			}
+			else {
+				// Draw the pizza only if it's not collected
+				drawObjectTexture(sphereContext, glm::translate(pizza.position) * glm::scale(glm::vec3(0.05f)), texture::metal, FALSE);
+			}
+		}
+	}
+
 	glUseProgram(0);
 	glfwSwapBuffers(window);
 
@@ -306,6 +328,14 @@ void initializePlanets() {
 	planets.push_back(Planet{ glm::vec3(11.f, 0, 0), glm::vec3(0.47f), false, texture::saturn, "Saturn", glm::vec3(11.f, 0, 0), false, empty_nmap_texture, FALSE });
 	planets.push_back(Planet{ glm::vec3(12.f, 0, 0), glm::vec3(0.32f), false, texture::uranus, "Uranus", glm::vec3(12.f, 0, 0), false, empty_nmap_texture, FALSE });
 	planets.push_back(Planet{ glm::vec3(14.f, 0, 0), glm::vec3(0.3f), false, texture::neptune, "Neptune", glm::vec3(14.f, 0, 0), false, empty_nmap_texture, FALSE });
+	for (auto& planet : planets) {
+		for (int i = 0; i < 3; ++i) { // Generate 3 pizza objects near each planet
+			float angle = glm::radians(static_cast<float>(rand() % 360));// Random angle around the planet
+			float distance = 0.5f + static_cast<float>(rand() % 5); // Random distance from the planet
+			glm::vec3 pizzaPosition = planet.startPosition + glm::vec3(cos(angle) * distance, 0.0f, sin(angle) * distance);
+			pizzas.push_back(Pizza{ pizzaPosition, false });
+		}
+	}
 }
 
 GLuint loadCubemap(std::vector<std::string> faces)
@@ -481,16 +511,35 @@ void processInput(GLFWwindow* window)
 
 	spaceshipDir = cameraDir;
 
+	for (auto& pizza : pizzas) {
+		if (!pizza.collected && glm::distance(spaceshipPos, pizza.position) < 0.5f) {
+			pizza.collected = true;
+		}
+	}
+
 }
 
 
+bool allPizzasCollected() {
+	for (const auto& pizza : pizzas) {
+		if (!pizza.collected) {
+			return false;
+		}
+	}
+	return true; 
+}
+
 // funkcja jest glowna petla
 void renderLoop(GLFWwindow* window) {
-
 	while (!glfwWindowShouldClose(window)) {
-
 		processInput(window);
 		renderScene(window);
+
+		if (allPizzasCollected()) {
+			std::cout << "All pizzas collected. Congratulations!!!" << std::endl;
+			glfwSetWindowShouldClose(window, true);
+			break;
+		}
 
 		glfwPollEvents();
 	}
