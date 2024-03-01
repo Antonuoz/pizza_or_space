@@ -53,6 +53,7 @@ namespace texture {
 	GLuint sun;
 	GLuint metal;
 	GLuint earth_nmap;
+	GLuint pizza;
 }
 
 
@@ -70,6 +71,7 @@ Core::Shader_Loader shaderLoader;
 Core::RenderContext shipContext;
 Core::RenderContext stationContext;
 Core::RenderContext sphereContext;
+Core::RenderContext pizzaContext;
 GLuint empty_nmap_texture = -1;
 glm::vec3 cameraPos = glm::vec3(-4.f, 0, 0);
 glm::vec3 cameraDir = glm::vec3(1.f, 0.f, 0.f);
@@ -276,7 +278,8 @@ void renderScene(GLFWwindow* window)
 	glm::mat4 spaceshipModelMatrix = glm::translate(spaceshipPos) * specshipCameraRotrationMatrix * rotationMatrix * rotationMatrix2 * glm::scale(glm::vec3(0.35f));
 
 	drawObjectTexture(shipContext, spaceshipModelMatrix, texture::fighter, FALSE);
-
+	glUseProgram(0);
+	glUseProgram(programTex);
 	for (auto& pizza : pizzas) {
 		if (!pizza.collected) {
 			float distanceToPizza = glm::distance(cameraPos, pizza.position);
@@ -289,7 +292,7 @@ void renderScene(GLFWwindow* window)
 			}
 			else {
 				// Draw the pizza only if it's not collected
-				drawObjectTexture(sphereContext, glm::translate(pizza.position) * glm::scale(glm::vec3(0.05f)), texture::metal, FALSE);
+				drawObjectTexture(pizzaContext, glm::translate(pizza.position) * glm::scale(glm::vec3(0.0035f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)), texture::pizza, FALSE);
 			}
 		}
 	}
@@ -426,6 +429,7 @@ void init(GLFWwindow* window){
 	texture::asteroid = Core::LoadTexture("textures/asteroid.jpg");
 	texture::sun = Core::LoadTexture("textures/sun.jpg");
 	texture::metal = Core::LoadTexture("textures/metal.jpg");
+	texture::pizza = Core::LoadTexture("textures/pizza.png");
 
 	texture::earth_nmap = Core::LoadTexture("textures/earth_normalmap.png");
 
@@ -433,6 +437,7 @@ void init(GLFWwindow* window){
 	loadModelToContext("./models/sphere.obj", sphereContext);
 	loadModelToContext("./models/fighter.obj", shipContext);
 	loadModelToContext("./models/station.obj", stationContext);
+	loadModelToContext("./models/Pizza.obj", pizzaContext);
 
 	initializePlanets();
 }
@@ -484,11 +489,15 @@ void processInput(GLFWwindow* window)
 	glm::vec3 spaceshipUp = glm::vec3(0.f, 1.f, 0.f);
 	float angleSpeed = 0.003f;
 	float moveSpeed = 0.007f;
-	static bool rKeyPressedLastFrame = false;
+	//static bool rKeyPressedLastFrame = false;
 	
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	{
+		moveSpeed *= 2.0f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		spaceshipPos += spaceshipDir * moveSpeed;
@@ -505,7 +514,7 @@ void processInput(GLFWwindow* window)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	void mouse_callback(GLFWwindow * window, double xpos, double ypos);
 	glfwSetCursorPosCallback(window, mouse_callback);
-	bool rKeyPressedThisFrame = glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS;
+	//bool rKeyPressedThisFrame = glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS;
 
 	cameraPos = spaceshipPos - 1.5 * spaceshipDir + glm::vec3(0, 1, 0) * 0.5f;
 
