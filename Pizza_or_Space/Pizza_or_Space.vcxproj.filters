@@ -104,6 +104,12 @@
     <None Include="shaders\shader_unmap.frag">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\bloom.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\bloom.frag">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">

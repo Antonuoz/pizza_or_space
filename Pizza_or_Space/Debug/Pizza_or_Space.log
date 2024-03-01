@@ -8,31 +8,25 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(1
 G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(38,9): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(179,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(239,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(201,62): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(475,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(236,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(476,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(457,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(480,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(458,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(481,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(462,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(482,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(463,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  (compiling source file 'src/main.cpp')
-  
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(464,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  (compiling source file 'src/main.cpp')
-  
-G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(465,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(483,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
 Box.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification

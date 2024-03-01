@@ -37,7 +37,9 @@ float pitch;
 float yaw;
 float n = 0.05;
 float f = 1000;
-
+float metallic;
+float roughness;
+glm::vec3 albedo;
 namespace texture {
 	GLuint earth;
 	GLuint mars;
@@ -102,13 +104,14 @@ std::vector<Pizza> pizzas;
 struct Planet {
 	glm::vec3 startPosition;
 	glm::vec3 modelScale;
-	bool isActivated;
 	GLuint textureID;
 	std::string name;
 	glm::vec3 currentPlanetPos;
-	bool interacted;
 	GLuint nmap_texture;
 	bool isNmap;
+	float metallic;
+	float roughness;
+	glm::vec3 albedo;
 
 };
 
@@ -176,7 +179,7 @@ void drawObjectTexture(Core::RenderContext& context, glm::mat4 modelMatrix, GLui
 	Core::SetActiveTexture(textureID, "colorTexture", program, 0);
 	// Ustawianie uniformów dla shadera
 	if (program == programTex) {
-		glUniform1f(glGetUniformLocation(programTex, "metallic"), 0.3);
+		glUniform1f(glGetUniformLocation(programTex, "metallic"), 0.5);
 		glUniform1f(glGetUniformLocation(programTex, "roughness"), 0.5);
 		glUniform3fv(glGetUniformLocation(programTex, "albedo"), 1, glm::value_ptr(glm::vec3(1.0, 0.5, 0.31)));
 	}
@@ -187,7 +190,7 @@ void drawObjectTexture(Core::RenderContext& context, glm::mat4 modelMatrix, GLui
 
 
 
-void drawObjectTextureWithNMAP(Core::RenderContext& context, glm::mat4 modelMatrix, GLuint textureID, GLuint nmap_texture) {
+void drawObjectTextureWithNMAP(Core::RenderContext& context, glm::mat4 modelMatrix, GLuint textureID, GLuint nmap_texture, float metallic, float roughness, glm::vec3 albedo) {
 	glUseProgram(programUnmap);
 
 	glm::mat4 viewProjectionMatrix = createPerspectiveMatrix() * createCameraMatrix();
@@ -198,9 +201,9 @@ void drawObjectTextureWithNMAP(Core::RenderContext& context, glm::mat4 modelMatr
 	glUniform3f(glGetUniformLocation(programUnmap, "lightPos"), 0, 0, 0);
 	Core::SetActiveTexture(textureID, "colorTexture", programUnmap, 0);
 
-	glUniform1f(glGetUniformLocation(programUnmap, "metallic"), 0.3);
-	glUniform1f(glGetUniformLocation(programUnmap, "roughness"), 0.5);
-	glUniform3fv(glGetUniformLocation(programUnmap, "albedo"), 1, glm::value_ptr(glm::vec3(1.0, 0.5, 0.31)));
+	glUniform1f(glGetUniformLocation(programUnmap, "metallic"), metallic);
+	glUniform1f(glGetUniformLocation(programUnmap, "roughness"), roughness);
+	glUniform3fv(glGetUniformLocation(programUnmap, "albedo"), 1, glm::value_ptr(albedo));
 	glUniform1i(glGetUniformLocation(programUnmap, "normalMap"), 1);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, nmap_texture);
@@ -246,7 +249,7 @@ void renderScene(GLFWwindow* window)
 
 		
 		glm::mat4 modelMatrix = glm::eulerAngleY(time / rot) * glm::translate(planet.startPosition) * glm::eulerAngleY(time) * glm::scale(planet.modelScale);
-		drawObjectTextureWithNMAP(sphereContext, modelMatrix, planet.textureID, texture::earth_nmap);
+		drawObjectTextureWithNMAP(sphereContext, modelMatrix, planet.textureID, texture::earth_nmap, planet.metallic, planet.roughness, planet.albedo);
 		planet.currentPlanetPos = glm::vec3(modelMatrix * glm::vec4(0, 0, 0, 1.0f));
 		rot += 0.5f;
 	}
@@ -284,7 +287,7 @@ void renderScene(GLFWwindow* window)
 			float distanceToPizza = glm::distance(cameraPos, pizza.position);
 
 			// Assuming the pizza is collected when it's close to the spaceship
-			if (distanceToPizza < 0.5f) {
+			if (distanceToPizza < 1.f) {
 				// Player collected the pizza
 				pizza.collected = true;
 				// Perform any additional actions here (e.g., score increment)
@@ -327,17 +330,32 @@ void loadModelToContext(std::string path, Core::RenderContext& context)
 	context.initFromAssimpMesh(scene->mMeshes[0]);
 }
 
-
+void generatePBRParameters(float &metallic, float &roughness, glm::vec3 albedo ) {
+	metallic = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	roughness = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	albedo = glm::vec3(
+		static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
+		static_cast<float>(rand()) / static_cast<float>(RAND_MAX),
+		static_cast<float>(rand()) / static_cast<float>(RAND_MAX)
+	);
+}
 void initializePlanets() {
-
-	planets.push_back(Planet{ glm::vec3(1.5f, 0, 0), glm::vec3(0.1f), false, texture::mercury, "Mercury", glm::vec3(1.5f, 0, 0), false, empty_nmap_texture, FALSE });
-	planets.push_back(Planet{ glm::vec3(2.3f, 0, 0), glm::vec3(0.15f), false, texture::venus, "Venus", glm::vec3(2.3f, 0, 0), false, empty_nmap_texture, FALSE });
-	planets.push_back(Planet{ glm::vec3(4.f, 0, 0), glm::vec3(0.25f), false, texture::earth, "Earth", glm::vec3(4.f, 0, 0), false, texture::earth_nmap, TRUE });
-	planets.push_back(Planet{ glm::vec3(6.6f, 0, 0), glm::vec3(0.27f), false, texture::mars, "Mars", glm::vec3(6.6f, 0, 0), false, empty_nmap_texture, FALSE });
-	planets.push_back(Planet{ glm::vec3(7.4f, 0, 0), glm::vec3(0.43f), false, texture::jupiter, "Jupiter", glm::vec3(7.4f, 0, 0), false, empty_nmap_texture, FALSE });
-	planets.push_back(Planet{ glm::vec3(11.f, 0, 0), glm::vec3(0.47f), false, texture::saturn, "Saturn", glm::vec3(11.f, 0, 0), false, empty_nmap_texture, FALSE });
-	planets.push_back(Planet{ glm::vec3(12.f, 0, 0), glm::vec3(0.32f), false, texture::uranus, "Uranus", glm::vec3(12.f, 0, 0), false, empty_nmap_texture, FALSE });
-	planets.push_back(Planet{ glm::vec3(14.f, 0, 0), glm::vec3(0.3f), false, texture::neptune, "Neptune", glm::vec3(14.f, 0, 0), false, empty_nmap_texture, FALSE });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(1.5f, 0, 0), glm::vec3(0.1f), texture::mercury, "Mercury", glm::vec3(1.5f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo});
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(2.3f, 0, 0), glm::vec3(0.15f), texture::venus, "Venus", glm::vec3(2.3f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(4.f, 0, 0), glm::vec3(0.25f), texture::earth, "Earth", glm::vec3(4.f, 0, 0), texture::earth_nmap, TRUE, metallic, roughness,albedo });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(6.6f, 0, 0), glm::vec3(0.27f), texture::mars, "Mars", glm::vec3(6.6f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(7.4f, 0, 0), glm::vec3(0.43f), texture::jupiter, "Jupiter", glm::vec3(7.4f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(11.f, 0, 0), glm::vec3(0.47f), texture::saturn, "Saturn", glm::vec3(11.f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(12.f, 0, 0), glm::vec3(0.32f), texture::uranus, "Uranus", glm::vec3(12.f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo });
+	generatePBRParameters(metallic, roughness, albedo);
+	planets.push_back(Planet{ glm::vec3(14.f, 0, 0), glm::vec3(0.3f), texture::neptune, "Neptune", glm::vec3(14.f, 0, 0), empty_nmap_texture, FALSE, metallic, roughness,albedo });
 	for (auto& planet : planets) {
 		for (int i = 0; i < 3; ++i) { // Generate 3 pizza objects near each planet
 			float angle = glm::radians(static_cast<float>(rand() % 360));// Random angle around the planet
@@ -489,16 +507,12 @@ void shutdown(GLFWwindow* window)
 	shaderLoader.DeleteProgram(program);
 }
 
-
-//obsluga wejscia
 void processInput(GLFWwindow* window)
 {
 	glm::vec3 spaceshipSide = glm::normalize(glm::cross(spaceshipDir, glm::vec3(0.f, 1.f, 0.f)));
 	glm::vec3 spaceshipUp = glm::vec3(0.f, 1.f, 0.f);
 	float angleSpeed = 0.003f;
-	float moveSpeed = 0.007f;
-	//static bool rKeyPressedLastFrame = false;
-	
+	float moveSpeed = 0.005f;
 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
@@ -529,7 +543,7 @@ void processInput(GLFWwindow* window)
 	spaceshipDir = cameraDir;
 
 	for (auto& pizza : pizzas) {
-		if (!pizza.collected && glm::distance(spaceshipPos, pizza.position) < 0.5f) {
+		if (!pizza.collected && glm::distance(spaceshipPos, pizza.position) < 1.f) {
 			pizza.collected = true;
 		}
 	}
@@ -546,7 +560,6 @@ bool allPizzasCollected() {
 	return true; 
 }
 
-// funkcja jest glowna petla
 void renderLoop(GLFWwindow* window) {
 	for (auto& pizza : pizzas) {
 		if (!pizza.collected) {
