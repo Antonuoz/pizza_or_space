@@ -1,37 +1,40 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GrafikaProjekt.vcxproj, Projekt_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿G:\stuff\VS\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GrafikaProjekt.vcxproj, Projekt_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   main.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
   (compiling source file 'src/main.cpp')
-  C:\Users\LoxUser\Desktop\rep\pizza_or_space\dependencies\glfw-3.3.8.bin.WIN32\include\GLFW\glfw3.h(123,1):
+  G:\Space_or_Pizza\dependencies\glfw-3.3.8.bin.WIN32\include\GLFW\glfw3.h(123,1):
   see previous definition of 'APIENTRY'
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(38,9): warning C4305: 'initializing': truncation from 'double' to 'float'
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(38,9): warning C4305: 'initializing': truncation from 'double' to 'float'
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(202,62): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(179,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(237,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(201,62): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(449,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(236,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(450,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(457,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(454,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(458,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(455,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(462,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(456,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(463,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
-C:\Users\LoxUser\Desktop\rep\pizza_or_space\Pizza_or_Space\src\project.hpp(457,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(464,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'src/main.cpp')
+  
+G:\Space_or_Pizza\Pizza_or_Space\src\project.hpp(465,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file 'src/main.cpp')
   
 Box.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Pizza_or_Space.vcxproj -> C:\Users\LoxUser\Desktop\rep\pizza_or_space\Debug\Pizza_or_Space.exe
+  Pizza_or_Space.vcxproj -> G:\Space_or_Pizza\Debug\Pizza_or_Space.exe

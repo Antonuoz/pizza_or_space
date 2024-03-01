@@ -4,8 +4,6 @@ uniform sampler2D colorTexture;
 uniform sampler2D normalMap; // Normal map
 uniform vec3 lightPos;
 uniform vec3 cameraPos; // Pozycja kamery dla PBR
-uniform bool isHighlighted;
-uniform vec3 highlightColor;
 uniform float brightnessFactor = 4; // Faktor jasnoœci dla PBR
 
 uniform float metallic;
@@ -74,9 +72,6 @@ void main() {
     lighting *= NdotL;
 
     vec3 result = ambient + lighting;
-    if(isHighlighted) {
-        result = mix(result, highlightColor, 0.5);
-    }
 
     outColor = vec4(result, 1.0);
 }

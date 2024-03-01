@@ -88,9 +88,14 @@ std::vector<glm::vec3> asteroidPositions;
 struct Pizza {
 	glm::vec3 position;
 	bool collected;
+	float rotationAngleX; // Rotation angle around the X axis
+	float rotationAngleY; // Rotation angle around the Y axis
+	float rotationAngleZ; // Rotation angle around the Z axis
 };
 
+
 std::vector<Pizza> pizzas;
+
 
 
 
@@ -157,7 +162,7 @@ glm::mat4 createPerspectiveMatrix()
 	return perspectiveMatrix;
 }
 
-void drawObjectTexture(Core::RenderContext& context, glm::mat4 modelMatrix, GLuint textureID, bool isHighlighted) {
+void drawObjectTexture(Core::RenderContext& context, glm::mat4 modelMatrix, GLuint textureID) {
 	program = programTex;
 	if (textureID == texture::sun)
 		program = programSun;
@@ -169,12 +174,9 @@ void drawObjectTexture(Core::RenderContext& context, glm::mat4 modelMatrix, GLui
 
 	glUniform3f(glGetUniformLocation(program, "lightPos"), 0, 0, 0);
 	Core::SetActiveTexture(textureID, "colorTexture", program, 0);
-	glUniform1i(glGetUniformLocation(program, "isHighlighted"), isHighlighted ? GL_TRUE : GL_FALSE);
-	glm::vec3 highlightColor = isHighlighted ? glm::vec3(0.0f, 1.0f, 0.0f) : glm::vec3(0.0f, 0.0f, 0.0f);
-	glUniform3fv(glGetUniformLocation(program, "highlightColor"), 1, glm::value_ptr(highlightColor));
 	// Ustawianie uniformów dla shadera
 	if (program == programTex) {
-		glUniform1f(glGetUniformLocation(programTex, "metallic"), 0.5);
+		glUniform1f(glGetUniformLocation(programTex, "metallic"), 0.3);
 		glUniform1f(glGetUniformLocation(programTex, "roughness"), 0.5);
 		glUniform3fv(glGetUniformLocation(programTex, "albedo"), 1, glm::value_ptr(glm::vec3(1.0, 0.5, 0.31)));
 	}
@@ -185,7 +187,7 @@ void drawObjectTexture(Core::RenderContext& context, glm::mat4 modelMatrix, GLui
 
 
 
-void drawObjectTextureWithNMAP(Core::RenderContext& context, glm::mat4 modelMatrix, GLuint textureID, bool isHighlighted, GLuint nmap_texture) {
+void drawObjectTextureWithNMAP(Core::RenderContext& context, glm::mat4 modelMatrix, GLuint textureID, GLuint nmap_texture) {
 	glUseProgram(programUnmap);
 
 	glm::mat4 viewProjectionMatrix = createPerspectiveMatrix() * createCameraMatrix();
@@ -195,9 +197,6 @@ void drawObjectTextureWithNMAP(Core::RenderContext& context, glm::mat4 modelMatr
 
 	glUniform3f(glGetUniformLocation(programUnmap, "lightPos"), 0, 0, 0);
 	Core::SetActiveTexture(textureID, "colorTexture", programUnmap, 0);
-	glUniform1i(glGetUniformLocation(programUnmap, "isHighlighted"), isHighlighted ? GL_TRUE : GL_FALSE);
-	glm::vec3 highlightColor = isHighlighted ? glm::vec3(0.0f, 1.0f, 0.0f) : glm::vec3(0.0f, 0.0f, 0.0f);
-	glUniform3fv(glGetUniformLocation(programUnmap, "highlightColor"), 1, glm::value_ptr(highlightColor));
 
 	glUniform1f(glGetUniformLocation(programUnmap, "metallic"), 0.3);
 	glUniform1f(glGetUniformLocation(programUnmap, "roughness"), 0.5);
@@ -237,7 +236,7 @@ void renderScene(GLFWwindow* window)
 	float time = glfwGetTime();
 	drawObjectSkybox();
 	//sun
-	drawObjectTexture(sphereContext, glm::mat4(), texture::sun, FALSE);
+	drawObjectTexture(sphereContext, glm::mat4(), texture::sun);
 
 	float rot = 1.f;
 
@@ -247,18 +246,18 @@ void renderScene(GLFWwindow* window)
 
 		
 		glm::mat4 modelMatrix = glm::eulerAngleY(time / rot) * glm::translate(planet.startPosition) * glm::eulerAngleY(time) * glm::scale(planet.modelScale);
-		drawObjectTextureWithNMAP(sphereContext, modelMatrix, planet.textureID, planet.isActivated, texture::earth_nmap);
+		drawObjectTextureWithNMAP(sphereContext, modelMatrix, planet.textureID, texture::earth_nmap);
 		planet.currentPlanetPos = glm::vec3(modelMatrix * glm::vec4(0, 0, 0, 1.0f));
 		rot += 0.5f;
 	}
 
 	
 	drawObjectTexture(sphereContext,
-		glm::eulerAngleY(time / 2.0f) * glm::translate(glm::vec3(4.f, 0, 0)) * glm::eulerAngleY(time) * glm::translate(glm::vec3(1.f, 0, 0)) * glm::scale(glm::vec3(0.1f)), texture::moon, FALSE);
+		glm::eulerAngleY(time / 2.0f) * glm::translate(glm::vec3(4.f, 0, 0)) * glm::eulerAngleY(time) * glm::translate(glm::vec3(1.f, 0, 0)) * glm::scale(glm::vec3(0.1f)), texture::moon);
 	
 	drawObjectTexture(stationContext,
 		glm::translate(glm::vec3(-25.f, -0.f, 0)) * glm::scale(glm::vec3(0.5f)),
-		texture::metal, FALSE
+		texture::metal
 	);
 
 
@@ -277,7 +276,7 @@ void renderScene(GLFWwindow* window)
 	glm::mat4 rotationMatrix2 = glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(1, 0, 0));
 	glm::mat4 spaceshipModelMatrix = glm::translate(spaceshipPos) * specshipCameraRotrationMatrix * rotationMatrix * rotationMatrix2 * glm::scale(glm::vec3(0.35f));
 
-	drawObjectTexture(shipContext, spaceshipModelMatrix, texture::fighter, FALSE);
+	drawObjectTexture(shipContext, spaceshipModelMatrix, texture::fighter);
 	glUseProgram(0);
 	glUseProgram(programTex);
 	for (auto& pizza : pizzas) {
@@ -291,8 +290,16 @@ void renderScene(GLFWwindow* window)
 				// Perform any additional actions here (e.g., score increment)
 			}
 			else {
+
 				// Draw the pizza only if it's not collected
-				drawObjectTexture(pizzaContext, glm::translate(pizza.position) * glm::scale(glm::vec3(0.0035f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)), texture::pizza, FALSE);
+				drawObjectTexture(pizzaContext,
+					glm::translate(pizza.position) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(pizza.rotationAngleX), glm::vec3(1.0f, 0.0f, 0.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(pizza.rotationAngleY), glm::vec3(0.0f, 1.0f, 0.0f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(pizza.rotationAngleZ), glm::vec3(0.0f, 0.0f, 1.0f)) *
+					glm::scale(glm::vec3(0.0035f)) *
+					glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)),
+					texture::pizza);
 			}
 		}
 	}
@@ -393,6 +400,7 @@ void init(GLFWwindow* window){
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	program = shaderLoader.CreateProgram("shaders/shader.vert", "shaders/shader.frag");
 	programTex = shaderLoader.CreateProgram("shaders/shader_tex.vert", "shaders/shader_tex.frag");
 	programEarth = shaderLoader.CreateProgram("shaders/shader_tex.vert", "shaders/shader_tex.frag");
@@ -540,6 +548,14 @@ bool allPizzasCollected() {
 
 // funkcja jest glowna petla
 void renderLoop(GLFWwindow* window) {
+	for (auto& pizza : pizzas) {
+		if (!pizza.collected) {
+			pizza.rotationAngleX = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
+			pizza.rotationAngleY = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
+			pizza.rotationAngleZ = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * 360.0f;
+		}
+	}
+
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 		renderScene(window);

@@ -12,11 +12,11 @@ uniform float ao;
 uniform vec3 lightPos;
 uniform vec3 cameraPos;
 uniform sampler2D colorTexture;
-uniform float brightnessFactor = 7; // Faktor jasnoœci
+uniform float brightnessFactor = 10; // Faktor jasnoœci
 
 out vec4 outColor;
 
-// Funkcje pomocnicze dla PBR
+// PBR helper functions
 vec3 getNormal() {
     return normalize(vecNormal);
 }
@@ -83,7 +83,6 @@ void main() {
     vec3 ambient = (vec3(0.03) * albedo); // Minimalne œwiat³o otoczenia
     vec3 lighting = (kD * albedo / 3.14159265359 + specular) * NdotL; 
     vec3 color = ambient + lighting;
-    color = color / (color + vec3(1.0));
 
     outColor = vec4(color, 1.0);
 }
